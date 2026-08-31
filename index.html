@@ -4,211 +4,164 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07549a">
-<title>IOCL Fuel Stock Verification</title>
+<title>IOCL Fuel Stock Calculator</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#182230;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-header{background:linear-gradient(135deg,#07549a,#063a73);color:white;padding:18px 14px 20px;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px #0002}
-h1{font-size:21px;margin:0 0 4px}h2{font-size:17px;margin:0 0 12px}.muted{font-size:12px;color:#667085}.sub{font-size:12px;opacity:.9}
-main{max-width:1050px;margin:auto;padding:10px}.card{background:white;border:1px solid #dce3eb;border-radius:14px;padding:13px;margin:10px 0;box-shadow:0 2px 8px #102a4308}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-label{font-size:12px;font-weight:700;color:#475467}input,select{width:100%;margin-top:5px;border:1px solid #cbd5e1;border-radius:9px;padding:10px;background:#fff;font-size:15px;min-width:0}
-button{border:0;border-radius:9px;padding:10px 13px;font-weight:750;font-size:14px}.primary{background:#0864b4;color:#fff}.secondary{background:#e8eef6;color:#16324f}.danger{background:#ffe4e4;color:#a61b1b}
-.actions{display:flex;gap:8px;flex-wrap:wrap}.product{border:1px solid #d9e2ec;border-radius:12px;padding:12px;margin:10px 0}.producttop{display:flex;justify-content:space-between;gap:8px;align-items:center}
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#07549a,#063a73);color:#fff;padding:17px 14px;position:sticky;top:0;z-index:10}
+h1{font-size:21px;margin:0 0 4px}.sub{font-size:12px;opacity:.9}
+main{max-width:1050px;margin:auto;padding:8px}.card,.fuel{background:#fff;border:1px solid #d9e2ec;border-radius:14px;padding:12px;margin:9px 0;box-shadow:0 2px 8px #102a4308}
+h2{font-size:17px;margin:0 0 11px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+label{display:block;font-size:12px;font-weight:700;color:#475467}
+input,select{display:block;width:100%;margin-top:5px;padding:11px 10px;border:1px solid #c8d2de;border-radius:9px;background:#fff;font-size:16px;color:#17202a;outline:none}
+input:focus,select:focus{border-color:#0870c9;box-shadow:0 0 0 2px #0870c922}
+button{border:0;border-radius:9px;padding:10px 13px;font-size:14px;font-weight:750}.primary{background:#0864b4;color:#fff}.secondary{background:#e8eef6;color:#17324e}.danger{background:#ffe4e4;color:#a61b1b}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.fuelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800}.ok{background:#dff7ed;color:#087f5b}.warn{background:#fff0d6;color:#9a5a00}.bad{background:#ffe1e1;color:#b42318}
-.tablewrap{overflow:auto;border:1px solid #dce3eb;border-radius:9px;margin-top:10px}table{width:100%;border-collapse:collapse;min-width:720px}th,td{border-bottom:1px solid #e5e9ef;padding:7px 8px;font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#f7f9fc;color:#475467}
-.calc{background:#f7faff;border-left:4px solid #0864b4;padding:10px;border-radius:7px;margin-top:10px;font-size:12px;line-height:1.65}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.kpi{background:#f8fafc;border:1px solid #e1e7ef;border-radius:9px;padding:8px}.kpi span{display:block;color:#667085;font-size:10px}.kpi b{font-size:15px}
-.note{background:#fff8e8;border:1px solid #f0d38b;border-radius:9px;padding:10px;font-size:12px;line-height:1.5}
-footer{padding:14px 2px 30px;font-size:11px;color:#667085}
-@media(max-width:680px){.grid3{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}main{padding:7px}}
+.tablewrap{overflow:auto;border:1px solid #dce3eb;border-radius:9px;margin-top:9px}table{border-collapse:collapse;width:100%;min-width:720px}th,td{padding:7px;border-bottom:1px solid #e5e9ef;font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#f7f9fc;color:#475467}
+.tablewrap input{margin:0;padding:8px;font-size:14px}.calc{background:#f7faff;border-left:4px solid #0864b4;border-radius:7px;padding:9px;margin-top:9px;font-size:12px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.kpi{border:1px solid #e0e6ed;background:#f8fafc;border-radius:9px;padding:8px}.kpi span{display:block;font-size:10px;color:#667085}.kpi b{font-size:15px}
+.note{background:#fff8e8;border:1px solid #f0d38b;border-radius:9px;padding:9px;font-size:12px;line-height:1.5}.muted{color:#667085;font-size:11px}
+@media(max-width:680px){.grid3{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}main{padding:6px}}
 </style>
 </head>
 <body>
-<header>
-<h1>IOCL Fuel Stock Verification</h1>
-<div class="sub">Enter only inspection figures. IOCL MS/HSD stock-variation logic is applied automatically.</div>
-</header>
+<header><h1>IOCL Fuel Stock Calculator</h1><div class="sub">Enter values freely. Fields do not re-render while typing.</div></header>
 <main>
 <section class="card">
 <h2>1. Inspection Details</h2>
 <div class="grid3">
 <label>Inspection Date<input id="date" type="date"></label>
-<label>Location / RO<input id="location" placeholder="Enter location"></label>
-<label>Prepared By<input id="prepared" placeholder="Enter name"></label>
+<label>Location / RO<input id="location" type="text" placeholder="Enter location"></label>
+<label>Prepared By<input id="prepared" type="text" placeholder="Enter name"></label>
 </div>
 </section>
 
 <section class="card">
 <h2>2. Fuel Products</h2>
-<div class="note">
-<b>You do NOT enter:</b> 4% operational variation, 600 KL threshold, MS/HSD evaporation rates or permissible-limit rates. They are built into the calculator from the current IOCL MDG stock-variation rule. MS/X2/XP95 use the MS evaporation/handling rule; HSD uses the HSD handling rule. Shrinkage/TVA is handled separately where applicable.
-</div>
-<div class="actions" style="margin-top:10px"><button class="primary" onclick="addFuel()">+ Add Fuel</button><button class="secondary" onclick="loadExample()">Load your previous report example</button></div>
+<div class="note"><b>Enter only your raw inspection figures.</b> Opening stock, receipts, actual/DIP stock, previous/current totaliser readings and testing quantities. No guideline-rate fields are required.</div>
+<div class="actions" style="margin-top:9px"><button class="primary" id="addFuel">+ Add Fuel</button><button class="secondary" id="example">Load previous report example</button></div>
 <div id="fuels"></div>
 </section>
 
 <section class="card">
-<h2>3. Fuel-wise Final Summary</h2>
-<div class="tablewrap"><table>
-<thead><tr><th>Fuel</th><th>DIP Sales</th><th>DU Sales</th><th>Variation</th><th>4% Operational</th><th>Evap./Handling</th><th>TVA/Shrink.</th><th>Permissible</th><th>Margin</th><th>Result</th></tr></thead>
-<tbody id="summary"></tbody>
-</table></div>
+<h2>3. Final Summary</h2>
+<div class="tablewrap"><table><thead><tr><th>Fuel</th><th>DIP Sales</th><th>DU Sales</th><th>Variation</th><th>4% Operational</th><th>Evap./Handling</th><th>TVA</th><th>Permissible</th><th>Margin</th><th>Result</th></tr></thead><tbody id="summary"></tbody></table></div>
 </section>
 
 <section class="card">
 <h2>4. Save / Export</h2>
-<div class="actions">
-<button class="primary" onclick="saveData()">Save on phone</button>
-<button class="secondary" onclick="loadData()">Load saved</button>
-<button class="secondary" onclick="exportCSV()">Export CSV</button>
-<button class="danger" onclick="resetAll()">Reset</button>
-</div>
-<div class="muted" style="margin-top:8px">Saved data stays in this browser using local storage.</div>
+<div class="actions"><button class="primary" id="save">Save on phone</button><button class="secondary" id="load">Load saved</button><button class="secondary" id="csv">Export CSV</button><button class="danger" id="reset">Reset</button></div>
 </section>
-
-<footer>
-<b>Calculation basis:</b> DU sales = Σ(Current totaliser − Previous totaliser − Testing). DIP sales = Opening stock + receipts − actual physical/DIP stock. Variation = DU sales − DIP sales. IOCL MDG 2024 provides 4% normal operational variation and MS/HSD evaporation/handling allowances; shrinkage and temperature variation losses are included only where applicable. This calculator is a reconciliation aid, not a replacement for an official IOCL inspection determination.
-</footer>
 </main>
 
 <script>
-const RULES={
-  MS:{name:"MS / MS-type",up:0.0075,above:0.006},
-  HSD:{name:"HSD",up:0.0025,above:0.002}
-};
 let fuels=[];
-document.getElementById("date").value=new Date().toISOString().slice(0,10);
+const RULES={MS:{up:.0075,above:.006},HSD:{up:.0025,above:.002}};
+const $=id=>document.getElementById(id);
+$("date").value=new Date().toISOString().slice(0,10);
 
-function num(v){return Number(v)||0}
-function fmt(v){return num(v).toLocaleString("en-IN",{maximumFractionDigits:2})}
+function N(v){return v===""||v==null?0:Number(v)||0}
+function F(v){return N(v).toLocaleString("en-IN",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
-function ruleFor(f){
-  return f.rule==="HSD"?RULES.HSD:RULES.MS;
+function calculate(f){
+ let gross=0,sales=0;
+ f.dus.forEach(d=>{const g=N(d.current)-N(d.previous);gross+=g;sales+=g-N(d.testing)});
+ const available=N(f.opening)+N(f.receipts);
+ const dipSales=available-N(f.actual);
+ const variation=sales-dipSales;
+ const operational=Math.max(0,N(f.actual))*.04;
+ const annual=f.annualKL===""?sales/1000:N(f.annualKL);
+ const r=RULES[f.rule]||RULES.MS;
+ const evap=Math.min(Math.max(annual,0),600)*1000*r.up+Math.max(annual-600,0)*1000*r.above;
+ const tva=N(f.tva);
+ const permissible=operational+evap+tva;
+ const margin=permissible-Math.abs(variation);
+ return {gross,sales,available,dipSales,variation,operational,annual,evap,tva,permissible,margin,within:Math.abs(variation)<=permissible};
 }
-function evaporation(f,duSales){
-  // Annual average sales is the controlling quantity in the IOCL MDG rule.
-  // If the user does not enter annual average sales, the app uses current
-  // reconciliation-period DU sales as a transparent fallback.
-  const annualKL = f.annualKL!=="" && f.annualKL!=null ? num(f.annualKL) : duSales/1000;
-  const r=ruleFor(f);
-  const up=Math.min(Math.max(annualKL,0),600)*1000*r.up;
-  const above=Math.max(annualKL-600,0)*1000*r.above;
-  return {annualKL,up,above,total:up+above};
+
+function makeFuel(f,i){
+ const el=document.createElement("div");el.className="fuel";el.dataset.i=i;
+ el.innerHTML=`
+ <div class="fuelhead">
+  <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+   <input class="fuel-name" type="text" value="${esc(f.name)}" style="width:120px;margin:0;font-weight:800">
+   <select class="fuel-rule" style="width:145px;margin:0"><option value="MS">MS-type rule</option><option value="HSD">HSD rule</option></select>
+   <span class="badge status"></span>
+  </div>
+  <button class="danger remove-fuel">Remove</button>
+ </div>
+ <div class="grid3" style="margin-top:9px">
+  <label>Opening Stock (L)<input class="opening" type="number" inputmode="decimal" step="any" value="${esc(f.opening)}"></label>
+  <label>Receipts Since Last Inspection (L)<input class="receipts" type="number" inputmode="decimal" step="any" value="${esc(f.receipts)}"></label>
+  <label>Actual Physical / DIP Stock (L)<input class="actual" type="number" inputmode="decimal" step="any" value="${esc(f.actual)}"></label>
+ </div>
+ <div class="grid3" style="margin-top:9px">
+  <label>Annual Average Sales (KL) <span class="muted">optional</span><input class="annual" type="number" inputmode="decimal" step="any" value="${esc(f.annualKL)}" placeholder="Optional"></label>
+  <label>TVA / Shrinkage (L) <span class="muted">0 if none</span><input class="tva" type="number" inputmode="decimal" step="any" value="${esc(f.tva)}" placeholder="0"></label><div></div>
+ </div>
+ <div class="calc auto"></div>
+ <div class="kpis"><div class="kpi"><span>DIP Sales</span><b class="dipKpi">0</b></div><div class="kpi"><span>DU Sales</span><b class="duKpi">0</b></div><div class="kpi"><span>Variation</span><b class="varKpi">0</b></div><div class="kpi"><span>Permissible</span><b class="permKpi">0</b></div></div>
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><b>DU / Nozzle Readings</b><button class="secondary add-du">+ Add DU</button></div>
+ <div class="tablewrap"><table><thead><tr><th>DU / Nozzle</th><th>Previous Meter</th><th>Current Meter</th><th>Testing Qty</th><th>Gross</th><th>Net Sales</th><th></th></tr></thead><tbody class="du-body"></tbody></table></div>`;
+ const rule=el.querySelector(".fuel-rule");rule.value=f.rule||"MS";
+ el.querySelector(".fuel-name").addEventListener("input",e=>{f.name=e.target.value;update(i)});
+ el.querySelector(".fuel-rule").addEventListener("change",e=>{f.rule=e.target.value;update(i)});
+ ["opening","receipts","actual","annual","tva"].forEach(k=>el.querySelector("."+k).addEventListener("input",e=>{f[k]=e.target.value;update(i)}));
+ el.querySelector(".remove-fuel").addEventListener("click",()=>{fuels.splice(i,1);render()});
+ el.querySelector(".add-du").addEventListener("click",()=>{f.dus.push({name:"DU / Nozzle "+(f.dus.length+1),previous:"",current:"",testing:""});render()});
+ renderDUs(el,f,i);
+ return el;
 }
-function calc(f){
-  const duSales=f.dus.reduce((sum,d)=>sum+(num(d.current)-num(d.previous)-num(d.testing)),0);
-  const gross=f.dus.reduce((sum,d)=>sum+(num(d.current)-num(d.previous)),0);
-  const totalStock=num(f.opening)+num(f.receipts);
-  const dipSales=totalStock-num(f.actual);
-  const variation=duSales-dipSales;
-  const operational=Math.max(0,num(f.actual))*0.04;
-  const ev=evaporation(f,duSales);
-  const tva=num(f.tva);
-  const permissible=operational+ev.total+tva;
-  const abs=Math.abs(variation);
-  const margin=permissible-abs;
-  const within=abs<=permissible+1e-9;
-  return {duSales,gross,totalStock,dipSales,variation,operational,ev,tva,permissible,margin,within};
-}
-function addFuel(){
-  fuels.push({name:"MS",rule:"MS",opening:"",receipts:"",actual:"",annualKL:"",tva:"",dus:[{name:"DU / Nozzle 1",previous:"",current:"",testing:""}]});
-  render();
-}
-function removeFuel(i){fuels.splice(i,1);render()}
-function addDU(i){fuels[i].dus.push({name:"DU / Nozzle "+(fuels[i].dus.length+1),previous:"",current:"",testing:""});render()}
-function removeDU(i,j){fuels[i].dus.splice(j,1);render()}
-function render(){
- const root=document.getElementById("fuels");root.innerHTML="";
- fuels.forEach((f,i)=>{
-   const c=calc(f), cls=!f.name?"warn":(c.within?(c.margin<50?"warn":"ok"):"bad");
-   const status=c.within?(c.margin<50?"WITHIN — VERY CLOSE":"YES — WITHIN LIMIT"):"NO — EXCEEDS LIMIT";
-   const div=document.createElement("div");div.className="product";
-   div.innerHTML=`
-   <div class="producttop">
-    <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-      <input style="width:120px;margin:0;font-weight:800" value="${esc(f.name)}" oninput="fuels[${i}].name=this.value;summary()">
-      <select style="width:145px;margin:0" onchange="fuels[${i}].rule=this.value;render()">
-        <option value="MS" ${f.rule==="MS"?"selected":""}>MS-type rule</option>
-        <option value="HSD" ${f.rule==="HSD"?"selected":""}>HSD rule</option>
-      </select>
-      <span class="badge ${cls}">${status}</span>
-    </div>
-    <button class="danger" onclick="removeFuel(${i})">Remove</button>
-   </div>
-   <div class="grid3" style="margin-top:10px">
-    <label>Opening Stock (L)<input type="number" value="${f.opening}" oninput="fuels[${i}].opening=this.value;refreshCalc()"></label>
-    <label>Receipts Since Last Inspection (L)<input type="number" value="${f.receipts}" oninput="fuels[${i}].receipts=this.value;refreshCalc()"></label>
-    <label>Actual Physical / DIP Stock (L)<input type="number" value="${f.actual}" oninput="fuels[${i}].actual=this.value;refreshCalc()"></label>
-   </div>
-   <div class="grid3" style="margin-top:10px">
-    <label>Annual Average Sales (KL) <span class="muted">optional</span><input type="number" step="0.001" value="${f.annualKL}" placeholder="Leave blank to use current DU sales" oninput="fuels[${i}].annualKL=this.value;refreshCalc()"></label>
-    <label>TVA / Shrinkage Allowance (L) <span class="muted">only if applicable</span><input type="number" step="0.01" value="${f.tva}" placeholder="0 if not applicable" oninput="fuels[${i}].tva=this.value;refreshCalc()"></label>
-    <div></div>
-   </div>
-   <div class="calc">
-    <b>Automatic rule:</b> 4% of actual tank stock + applicable evaporation/handling allowance + TVA/shrinkage.
-    <br><b>Annual-average quantity used:</b> ${fmt(c.ev.annualKL)} KL
-    <br><b>Evap./handling:</b> ${fmt(c.ev.up)} L up to 600 KL + ${fmt(c.ev.above)} L above 600 KL = <b>${fmt(c.ev.total)} L</b>
-   </div>
-   <div class="kpis">
-    <div class="kpi"><span>DIP Sales</span><b>${fmt(c.dipSales)} L</b></div>
-    <div class="kpi"><span>DU Sales</span><b>${fmt(c.duSales)} L</b></div>
-    <div class="kpi"><span>Variation</span><b>${fmt(c.variation)} L</b></div>
-    <div class="kpi"><span>Permissible</span><b>${fmt(c.permissible)} L</b></div>
-   </div>
-   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-    <b>DU / Nozzle Readings</b><button class="secondary" onclick="addDU(${i})">+ Add DU</button>
-   </div>
-   <div class="tablewrap"><table><thead><tr><th>DU / Nozzle</th><th>Previous</th><th>Current</th><th>Testing</th><th>Gross</th><th>Net Sales</th><th></th></tr></thead><tbody>
-   ${f.dus.map((d,j)=>{
-     const gross=num(d.current)-num(d.previous),sales=gross-num(d.testing);
-     return `<tr>
-       <td><input value="${esc(d.name)}" oninput="fuels[${i}].dus[${j}].name=this.value"></td>
-       <td><input type="number" value="${d.previous}" oninput="fuels[${i}].dus[${j}].previous=this.value;refreshCalc()"></td>
-       <td><input type="number" value="${d.current}" oninput="fuels[${i}].dus[${j}].current=this.value;refreshCalc()"></td>
-       <td><input type="number" value="${d.testing}" oninput="fuels[${i}].dus[${j}].testing=this.value;refreshCalc()"></td>
-       <td>${fmt(gross)}</td><td><b>${fmt(sales)}</b></td><td><button class="danger" onclick="removeDU(${i},${j})">×</button></td>
-     </tr>`;
-   }).join("")}
-   </tbody></table></div>`;
-   root.appendChild(div);
+
+function renderDUs(el,f,i){
+ const body=el.querySelector(".du-body");body.innerHTML="";
+ f.dus.forEach((d,j)=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td><input class="dname" type="text" value="${esc(d.name)}"></td><td><input class="prev" type="number" inputmode="decimal" step="any" value="${esc(d.previous)}"></td><td><input class="curr" type="number" inputmode="decimal" step="any" value="${esc(d.current)}"></td><td><input class="test" type="number" inputmode="decimal" step="any" value="${esc(d.testing)}"></td><td class="gross">0</td><td class="sales">0</td><td><button class="danger del">×</button></td>`;
+  tr.querySelector(".dname").addEventListener("input",e=>{d.name=e.target.value});
+  [["prev","previous"],["curr","current"],["test","testing"]].forEach(([cls,key])=>tr.querySelector("."+cls).addEventListener("input",e=>{d[key]=e.target.value;update(i)}));
+  tr.querySelector(".del").addEventListener("click",()=>{f.dus.splice(j,1);render()});
+  body.appendChild(tr);
  });
+}
+
+function update(i){
+ const f=fuels[i],el=document.querySelector('.fuel[data-i="'+i+'"]');if(!el)return;
+ const c=calculate(f);
+ el.querySelectorAll(".du-body tr").forEach((tr,j)=>{const d=f.dus[j],g=N(d.current)-N(d.previous);tr.querySelector(".gross").textContent=F(g);tr.querySelector(".sales").textContent=F(g-N(d.testing))});
+ el.querySelector(".auto").innerHTML=`<b>Automatic calculation:</b> Total available ${F(c.available)} L → DIP sales ${F(c.dipSales)} L. DU gross ${F(c.gross)} L − testing = DU sales <b>${F(c.sales)} L</b>. Variation = <b>${F(c.variation)} L</b>.<br>4% operational = ${F(c.operational)} L. Evap./handling = ${F(c.evap)} L. TVA/shrinkage = ${F(c.tva)} L. <b>Permissible = ${F(c.permissible)} L.</b>`;
+ el.querySelector(".dipKpi").textContent=F(c.dipSales)+" L";el.querySelector(".duKpi").textContent=F(c.sales)+" L";el.querySelector(".varKpi").textContent=F(c.variation)+" L";el.querySelector(".permKpi").textContent=F(c.permissible)+" L";
+ const badge=el.querySelector(".status");badge.className="badge status "+(c.within?(c.margin<50?"warn":"ok"):"bad");badge.textContent=c.within?(c.margin<50?"WITHIN — CLOSE":"YES — WITHIN LIMIT"):"NO — EXCEEDS LIMIT";
  summary();
 }
-function refreshCalc(){render()}
+
+function render(){
+ const root=$("fuels");root.innerHTML="";
+ fuels.forEach((f,i)=>root.appendChild(makeFuel(f,i)));
+ fuels.forEach((_,i)=>update(i));summary();
+}
 function summary(){
- const body=document.getElementById("summary");
- body.innerHTML=fuels.map(f=>{
-   const c=calc(f),cls=c.within?(c.margin<50?"warn":"ok"):"bad";
-   return `<tr><td><b>${esc(f.name)}</b></td><td>${fmt(c.dipSales)}</td><td>${fmt(c.duSales)}</td><td>${fmt(c.variation)}</td><td>${fmt(c.operational)}</td><td>${fmt(c.ev.total)}</td><td>${fmt(c.tva)}</td><td>${fmt(c.permissible)}</td><td>${fmt(c.margin)}</td><td><span class="badge ${cls}">${c.within?"YES":"NO"}</span></td></tr>`;
- }).join("");
+ $("summary").innerHTML=fuels.map(f=>{const c=calculate(f);const cls=c.within?(c.margin<50?"warn":"ok"):"bad";return `<tr><td><b>${esc(f.name)}</b></td><td>${F(c.dipSales)}</td><td>${F(c.sales)}</td><td>${F(c.variation)}</td><td>${F(c.operational)}</td><td>${F(c.evap)}</td><td>${F(c.tva)}</td><td>${F(c.permissible)}</td><td>${F(c.margin)}</td><td><span class="badge ${cls}">${c.within?"YES":"NO"}</span></td></tr>`}).join("");
 }
-function saveData(){localStorage.setItem("ioclFuelStockFinal",JSON.stringify({date:date.value,location:location.value,prepared:prepared.value,fuels}));alert("Saved on this phone.");}
-function loadData(){const x=localStorage.getItem("ioclFuelStockFinal");if(!x){alert("No saved data.");return}const d=JSON.parse(x);date.value=d.date||"";location.value=d.location||"";prepared.value=d.prepared||"";fuels=d.fuels||[];render();}
-function resetAll(){if(confirm("Delete all current entries?")){fuels=[];render()}}
-function exportCSV(){
- let rows=[["Fuel","Rule","Opening L","Receipts L","Actual/DIP L","Annual Avg KL","DU Sales L","DIP Sales L","Variation L","Operational 4% L","Evap/Handling L","TVA/Shrinkage L","Permissible L","Margin L","Status"]];
- fuels.forEach(f=>{let c=calc(f);rows.push([f.name,f.rule,f.opening,f.receipts,f.actual,c.ev.annualKL,c.duSales,c.dipSales,c.variation,c.operational,c.ev.total,c.tva,c.permissible,c.margin,c.within?"YES":"NO"]);
-   f.dus.forEach(d=>rows.push([d.name+" (DU)", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Previous="+d.previous+" Current="+d.current+" Testing="+d.testing]));
- });
- const csv=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\\n");
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="IOCL_stock_verification_"+(date.value||"report")+".csv";a.click();
+function saveData(){localStorage.setItem("ioclFuelStockV4",JSON.stringify({date:$("date").value,location:$("location").value,prepared:$("prepared").value,fuels}));alert("Saved.");}
+function loadData(){const x=localStorage.getItem("ioclFuelStockV4");if(!x){alert("No saved data.");return}const d=JSON.parse(x);$("date").value=d.date||"";$("location").value=d.location||"";$("prepared").value=d.prepared||"";fuels=d.fuels||[];render()}
+function resetAll(){if(confirm("Reset all entries?")){fuels=[];render()}}
+function csv(){
+ let rows=[["Fuel","Rule","Opening L","Receipts L","Actual DIP L","Annual Avg KL","DU Sales L","DIP Sales L","Variation L","Operational 4% L","Evap Handling L","TVA L","Permissible L","Margin L","Result"]];
+ fuels.forEach(f=>{const c=calculate(f);rows.push([f.name,f.rule,f.opening,f.receipts,f.actual,c.annual,c.sales,c.dipSales,c.variation,c.operational,c.evap,c.tva,c.permissible,c.margin,c.within?"YES":"NO"])});
+ const s=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download="IOCL_stock_"+($("date").value||"report")+".csv";a.click();
 }
-function loadExample(){
+function example(){
  fuels=[
- {name:"HSD",rule:"HSD",opening:3369,receipts:521000,actual:13016,annualKL:491.152,tva:0,dus:[
-  {name:"HSD DU-5 NZL-7",previous:255165,current:337967,testing:0},
-  {name:"HSD DU-9 NZL-11",previous:2799098,current:3229298,testing:1800}]},
- {name:"MS",rule:"MS",opening:11165,receipts:741000,actual:9569,annualKL:672,tva:0,dus:[
-  {name:"MS DU-8 NZL-8",previous:2523198,current:2826263,testing:2100},
-  {name:"MS DU-8 NZL-9",previous:141805,current:141805,testing:0},
-  {name:"MS DU-9 NZL-10",previous:1414605,current:1533796,testing:0},
-  {name:"MS DU-5 NZL-5",previous:2323830,current:2323830,testing:0}]},
- {name:"X2",rule:"MS",opening:972,receipts:70000,actual:6693,annualKL:63.552,tva:0,dus:[
-  {name:"X2 DU-5 NZL-5",previous:141805,current:206657,testing:1300}]}
+ {name:"HSD",rule:"HSD",opening:3369,receipts:521000,actual:13016,annualKL:"",tva:0,dus:[{name:"HSD DU-5 NZL-7",previous:255165,current:337967,testing:0},{name:"HSD DU-9 NZL-11",previous:2799098,current:3229298,testing:1800}]},
+ {name:"MS",rule:"MS",opening:11165,receipts:741000,actual:9569,annualKL:"",tva:0,dus:[{name:"MS DU-8 NZL-8",previous:2523198,current:2826263,testing:2100},{name:"MS DU-8 NZL-9",previous:141805,current:141805,testing:0},{name:"MS DU-9 NZL-10",previous:1414605,current:1533796,testing:0},{name:"MS DU-5 NZL-5",previous:2323830,current:2323830,testing:0}]},
+ {name:"X2",rule:"MS",opening:972,receipts:70000,actual:6693,annualKL:"",tva:0,dus:[{name:"X2 DU-5 NZL-5",previous:141805,current:206657,testing:1300}]}
  ];render();
 }
-addFuel();
+$("addFuel").addEventListener("click",()=>{fuels.push({name:"New Fuel",rule:"MS",opening:"",receipts:"",actual:"",annualKL:"",tva:"",dus:[{name:"DU / Nozzle 1",previous:"",current:"",testing:""}]});render()});
+$("example").addEventListener("click",example);$("save").addEventListener("click",saveData);$("load").addEventListener("click",loadData);$("csv").addEventListener("click",csv);$("reset").addEventListener("click",resetAll);
+fuels=[{name:"",rule:"MS",opening:"",receipts:"",actual:"",annualKL:"",tva:"",dus:[{name:"DU / Nozzle 1",previous:"",current:"",testing:""}]}];render();
 </script>
 </body>
 </html>
