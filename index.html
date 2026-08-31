@@ -6,53 +6,52 @@
 <meta name="theme-color" content="#07549a">
 <title>IOCL Fuel Stock Calculator</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-header{background:linear-gradient(135deg,#07549a,#063a73);color:#fff;padding:17px 14px;position:sticky;top:0;z-index:10}
-h1{font-size:21px;margin:0 0 4px}.sub{font-size:12px;opacity:.9}
-main{max-width:1050px;margin:auto;padding:8px}.card,.fuel{background:#fff;border:1px solid #d9e2ec;border-radius:14px;padding:12px;margin:9px 0;box-shadow:0 2px 8px #102a4308}
-h2{font-size:17px;margin:0 0 11px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-label{display:block;font-size:12px;font-weight:700;color:#475467}
-input,select{display:block;width:100%;margin-top:5px;padding:11px 10px;border:1px solid #c8d2de;border-radius:9px;background:#fff;font-size:16px;color:#17202a;outline:none}
-input:focus,select:focus{border-color:#0870c9;box-shadow:0 0 0 2px #0870c922}
-button{border:0;border-radius:9px;padding:10px 13px;font-size:14px;font-weight:750}.primary{background:#0864b4;color:#fff}.secondary{background:#e8eef6;color:#17324e}.danger{background:#ffe4e4;color:#a61b1b}
-.actions{display:flex;gap:8px;flex-wrap:wrap}.fuelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800}.ok{background:#dff7ed;color:#087f5b}.warn{background:#fff0d6;color:#9a5a00}.bad{background:#ffe1e1;color:#b42318}
-.tablewrap{overflow:auto;border:1px solid #dce3eb;border-radius:9px;margin-top:9px}table{border-collapse:collapse;width:100%;min-width:720px}th,td{padding:7px;border-bottom:1px solid #e5e9ef;font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#f7f9fc;color:#475467}
-.tablewrap input{margin:0;padding:8px;font-size:14px}.calc{background:#f7faff;border-left:4px solid #0864b4;border-radius:7px;padding:9px;margin-top:9px;font-size:12px;line-height:1.6}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.kpi{border:1px solid #e0e6ed;background:#f8fafc;border-radius:9px;padding:8px}.kpi span{display:block;font-size:10px;color:#667085}.kpi b{font-size:15px}
-.note{background:#fff8e8;border:1px solid #f0d38b;border-radius:9px;padding:9px;font-size:12px;line-height:1.5}.muted{color:#667085;font-size:11px}
-@media(max-width:680px){.grid3{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}main{padding:6px}}
+:root{--blue:#07549a;--blue2:#0b6fc5;--navy:#07335f;--bg:#f4f7fb;--card:#fff;--line:#e3e9f1;--text:#17202a;--muted:#667085;--green:#087f5b;--greenbg:#e7f8f1;--amber:#9a5a00;--amberbg:#fff3dc;--red:#b42318;--redbg:#ffe8e6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:14px}
+header{background:linear-gradient(135deg,var(--navy),var(--blue2));color:#fff;padding:16px max(14px,calc((100% - 1080px)/2));position:sticky;top:0;z-index:20;box-shadow:0 4px 18px #07335f30}
+.header-inner{max-width:1080px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:38px;height:38px;border-radius:11px;background:#ffffff18;border:1px solid #ffffff30;display:grid;place-items:center;font-weight:900;font-size:18px}.brand-text h1{font-size:19px;margin:0 0 3px;letter-spacing:-.2px}.sub{font-size:11px;opacity:.88}.period-pill{font-size:11px;font-weight:800;background:#fff1;border:1px solid #ffffff30;border-radius:999px;padding:7px 10px;white-space:nowrap}
+main{max-width:1080px;margin:auto;padding:12px 10px 30px}.card,.fuel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 3px 14px #102a4309}.section-title{display:flex;align-items:center;gap:9px;margin-bottom:12px}.section-no{width:27px;height:27px;border-radius:8px;background:#e9f3ff;color:var(--blue);display:grid;place-items:center;font-size:12px;font-weight:900}.section-title h2{font-size:16px;margin:0}.section-help{margin-left:auto;color:var(--muted);font-size:11px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}label{display:block;font-size:11px;font-weight:800;color:#475467}input,select{display:block;width:100%;margin-top:5px;padding:11px 10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:16px;color:var(--text);outline:none;min-height:43px}input:focus,select:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #0b6fc51a}input[readonly],input:disabled{background:#f5f7fa;color:#475467}
+button{border:0;border-radius:10px;padding:10px 13px;font-size:13px;font-weight:800;cursor:pointer;transition:.15s transform,.15s opacity}button:active{transform:scale(.98)}button:hover{opacity:.92}.primary{background:var(--blue2);color:#fff}.secondary{background:#edf2f8;color:#17324e}.danger{background:var(--redbg);color:var(--red)}.actions{display:flex;gap:8px;flex-wrap:wrap}.fuel{border-color:#d8e4f0;padding:13px}.fuelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.fuel-title{display:flex;align-items:center;gap:8px}.fuel-title .fuel-name{width:150px;margin:0;font-weight:850;font-size:15px}.fuel-rule{width:145px!important;margin:0!important;font-size:13px!important;min-height:40px!important;padding:8px!important}.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900;white-space:nowrap}.ok{background:var(--greenbg);color:var(--green)}.warn{background:var(--amberbg);color:var(--amber)}.bad{background:var(--redbg);color:var(--red)}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px;margin-top:9px;background:#fff}table{border-collapse:collapse;width:100%;min-width:720px}th,td{padding:8px;border-bottom:1px solid #e9edf2;font-size:11px;text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{background:#f7f9fc;color:#475467;font-size:10px;text-transform:uppercase;letter-spacing:.25px}tbody tr:last-child td{border-bottom:0}.tablewrap input{margin:0;padding:8px;font-size:13px;min-height:37px}.calc{background:linear-gradient(90deg,#f4f9ff,#f9fbfd);border:1px solid #dceaf8;border-left:4px solid var(--blue2);border-radius:10px;padding:10px;margin-top:10px;font-size:11px;line-height:1.65;color:#344054}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.kpi{border:1px solid var(--line);background:#f9fbfd;border-radius:11px;padding:9px}.kpi span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.25px;margin-bottom:3px}.kpi b{font-size:14px}.note{background:var(--amberbg);border:1px solid #f0d38b;border-radius:11px;padding:10px;font-size:11px;line-height:1.55;color:#5f430e}.muted{color:var(--muted);font-size:10px}.du-head{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.du-head b{font-size:12px}.summary-table{min-width:850px}.summary-table .result-cell{text-align:center}.summary-table tr:hover td{background:#fafcff}.empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}.footer-note{text-align:center;color:var(--muted);font-size:10px;margin-top:15px}
+@media(max-width:680px){header{padding:12px}.header-inner{align-items:flex-start}.brand-icon{width:34px;height:34px}.brand-text h1{font-size:17px}.period-pill{display:none}main{padding:8px 6px 24px}.card,.fuel{border-radius:14px;padding:11px}.grid3{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.section-help{display:none}.fuel-title{width:100%}.fuel-title .fuel-name{width:100%;flex:1}.fuel-rule{width:135px!important}.fuelhead>.danger{width:100%}.kpis{grid-template-columns:1fr 1fr}.calc{font-size:10.5px}.actions button{flex:1}.tablewrap{margin-left:-2px;margin-right:-2px}input,select{min-height:44px}.summary-table{min-width:850px}}
+@media(max-width:400px){.grid3{grid-template-columns:1fr}.fuel-rule{width:100%!important}.fuel-title{flex-wrap:wrap}.kpis{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<header><h1>IOCL Fuel Stock Calculator</h1><div class="sub">Enter values freely. Fields do not re-render while typing.</div></header>
+<header><div class="header-inner"><div class="brand"><div class="brand-icon">₹</div><div class="brand-text"><h1>IOCL Fuel Stock Calculator</h1><div class="sub">Fuel stock reconciliation • mobile friendly</div></div></div><div class="period-pill" id="periodPill">Period: —</div></div></header>
 <main>
 <section class="card">
-<h2>1. Inspection Details</h2>
+<div class="section-title"><span class="section-no">1</span><h2>Inspection Details</h2><span class="section-help">Dates determine the loss threshold</span></div>
 <div class="grid3">
-<label>Inspection Date<input id="date" type="date"></label>
+<label>Previous Inspection Date<input id="prevDate" type="date"></label>
+<label>Current Inspection Date<input id="date" type="date"></label>
+<label>Inspection Period (days)<input id="days" type="number" readonly></label>
+</div>
+<div class="grid2" style="margin-top:9px">
 <label>Location / RO<input id="location" type="text" placeholder="Enter location"></label>
 <label>Prepared By<input id="prepared" type="text" placeholder="Enter name"></label>
 </div>
 </section>
 
 <section class="card">
-<h2>2. Fuel Products</h2>
-<div class="note"><b>Enter only your raw inspection figures.</b> Opening stock, receipts, actual/DIP stock, previous/current totaliser readings and testing quantities. No guideline-rate fields are required.</div>
+<div class="section-title"><span class="section-no">2</span><h2>Fuel Products</h2><span class="section-help">Enter raw readings only</span></div>
+<div class="note"><b>Enter only raw inspection figures.</b> The app calculates DU sales, DIP sales, variation, 4% operational allowance, and the IOCL tiered evaporation/handling allowance automatically. Enter the <b>Previous Inspection Date</b> so the 600 KL annual threshold is prorated to the actual inspection period.</div>
 <div class="actions" style="margin-top:9px"><button class="primary" id="addFuel">+ Add Fuel</button><button class="secondary" id="example">Load previous report example</button></div>
 <div id="fuels"></div>
 </section>
 
 <section class="card">
-<h2>3. Final Summary</h2>
-<div class="tablewrap"><table><thead><tr><th>Fuel</th><th>DIP Sales</th><th>DU Sales</th><th>Variation</th><th>4% Operational</th><th>Evap./Handling</th><th>TVA</th><th>Permissible</th><th>Margin</th><th>Result</th></tr></thead><tbody id="summary"></tbody></table></div>
+<div class="section-title"><span class="section-no">3</span><h2>Final Summary</h2><span class="section-help">Live reconciliation</span></div>
+<div class="tablewrap"><table class="summary-table"><thead><tr><th>Fuel</th><th>DIP Sales</th><th>DU Sales</th><th>Variation</th><th>4% Operational</th><th>Evap./Handling</th><th>TVA</th><th>Permissible</th><th>Margin</th><th>Result</th></tr></thead><tbody id="summary"></tbody></table></div>
 </section>
 
 <section class="card">
-<h2>4. Save / Export</h2>
+<div class="section-title"><span class="section-no">4</span><h2>Save / Export</h2><span class="section-help">Keep a copy on your phone</span></div>
 <div class="actions"><button class="primary" id="save">Save on phone</button><button class="secondary" id="load">Load saved</button><button class="secondary" id="csv">Export CSV</button><button class="danger" id="reset">Reset</button></div>
 </section>
 </main>
+<div class="footer-note">Calculations are based on the configured IOCL stock-reconciliation rules. Verify official inspection requirements before use.</div>
 
 <script>
 let fuels=[];
@@ -64,6 +63,20 @@ function N(v){return v===""||v==null?0:Number(v)||0}
 function F(v){return N(v).toLocaleString("en-IN",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
+function inspectionDays(){
+ const a=$("prevDate").value,b=$("date").value;
+ if(!a||!b)return 365;
+ const d=(new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000;
+ return d>0?d:365;
+}
+function updateInspectionDays(){
+ const d=inspectionDays();
+ $("days").value=d;
+ $("periodPill").textContent="Period: "+F(d)+" days";
+ fuels.forEach((_,i)=>update(i));
+ summary();
+}
+
 function calculate(f){
  let gross=0,sales=0;
  f.dus.forEach(d=>{const g=N(d.current)-N(d.previous);gross+=g;sales+=g-N(d.testing)});
@@ -71,20 +84,24 @@ function calculate(f){
  const dipSales=available-N(f.actual);
  const variation=sales-dipSales;
  const operational=Math.max(0,N(f.actual))*.04;
- const annual=f.annualKL===""?sales/1000:N(f.annualKL);
  const r=RULES[f.rule]||RULES.MS;
- const evap=Math.min(Math.max(annual,0),600)*1000*r.up+Math.max(annual-600,0)*1000*r.above;
+ const days=Math.max(0,inspectionDays());
+ const thresholdL=600000*days/365;
+ const qtyForLoss=sales;
+ const firstQty=Math.min(Math.max(qtyForLoss,0),thresholdL);
+ const excessQty=Math.max(qtyForLoss-thresholdL,0);
+ const evap=firstQty*r.up+excessQty*r.above;
  const tva=N(f.tva);
  const permissible=operational+evap+tva;
  const margin=permissible-Math.abs(variation);
- return {gross,sales,available,dipSales,variation,operational,annual,evap,tva,permissible,margin,within:Math.abs(variation)<=permissible};
+ return {gross,sales,available,dipSales,variation,operational,days,thresholdL,firstQty,excessQty,evap,tva,permissible,margin,within:Math.abs(variation)<=permissible};
 }
 
 function makeFuel(f,i){
  const el=document.createElement("div");el.className="fuel";el.dataset.i=i;
  el.innerHTML=`
  <div class="fuelhead">
-  <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+  <div class="fuel-title">
    <input class="fuel-name" type="text" value="${esc(f.name)}" style="width:120px;margin:0;font-weight:800">
    <select class="fuel-rule" style="width:145px;margin:0"><option value="MS">MS-type rule</option><option value="HSD">HSD rule</option></select>
    <span class="badge status"></span>
@@ -97,17 +114,17 @@ function makeFuel(f,i){
   <label>Actual Physical / DIP Stock (L)<input class="actual" type="number" inputmode="decimal" step="any" value="${esc(f.actual)}"></label>
  </div>
  <div class="grid3" style="margin-top:9px">
-  <label>Annual Average Sales (KL) <span class="muted">optional</span><input class="annual" type="number" inputmode="decimal" step="any" value="${esc(f.annualKL)}" placeholder="Optional"></label>
+  <label>Annual Average Sales (KL) <span class="muted">not used for this tier</span><input class="annual" type="number" inputmode="decimal" step="any" value="${esc(f.annualKL)}" placeholder="Auto from period sales" disabled></label>
   <label>TVA / Shrinkage (L) <span class="muted">0 if none</span><input class="tva" type="number" inputmode="decimal" step="any" value="${esc(f.tva)}" placeholder="0"></label><div></div>
  </div>
  <div class="calc auto"></div>
  <div class="kpis"><div class="kpi"><span>DIP Sales</span><b class="dipKpi">0</b></div><div class="kpi"><span>DU Sales</span><b class="duKpi">0</b></div><div class="kpi"><span>Variation</span><b class="varKpi">0</b></div><div class="kpi"><span>Permissible</span><b class="permKpi">0</b></div></div>
- <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><b>DU / Nozzle Readings</b><button class="secondary add-du">+ Add DU</button></div>
+ <div class="du-head"><b>DU / Nozzle Readings</b><button class="secondary add-du">+ Add DU</button></div>
  <div class="tablewrap"><table><thead><tr><th>DU / Nozzle</th><th>Previous Meter</th><th>Current Meter</th><th>Testing Qty</th><th>Gross</th><th>Net Sales</th><th></th></tr></thead><tbody class="du-body"></tbody></table></div>`;
  const rule=el.querySelector(".fuel-rule");rule.value=f.rule||"MS";
  el.querySelector(".fuel-name").addEventListener("input",e=>{f.name=e.target.value;update(i)});
  el.querySelector(".fuel-rule").addEventListener("change",e=>{f.rule=e.target.value;update(i)});
- ["opening","receipts","actual","annual","tva"].forEach(k=>el.querySelector("."+k).addEventListener("input",e=>{f[k]=e.target.value;update(i)}));
+ ["opening","receipts","actual","tva"].forEach(k=>el.querySelector("."+k).addEventListener("input",e=>{f[k]=e.target.value;update(i)}));
  el.querySelector(".remove-fuel").addEventListener("click",()=>{fuels.splice(i,1);render()});
  el.querySelector(".add-du").addEventListener("click",()=>{f.dus.push({name:"DU / Nozzle "+(f.dus.length+1),previous:"",current:"",testing:""});render()});
  renderDUs(el,f,i);
@@ -130,7 +147,8 @@ function update(i){
  const f=fuels[i],el=document.querySelector('.fuel[data-i="'+i+'"]');if(!el)return;
  const c=calculate(f);
  el.querySelectorAll(".du-body tr").forEach((tr,j)=>{const d=f.dus[j],g=N(d.current)-N(d.previous);tr.querySelector(".gross").textContent=F(g);tr.querySelector(".sales").textContent=F(g-N(d.testing))});
- el.querySelector(".auto").innerHTML=`<b>Automatic calculation:</b> Total available ${F(c.available)} L → DIP sales ${F(c.dipSales)} L. DU gross ${F(c.gross)} L − testing = DU sales <b>${F(c.sales)} L</b>. Variation = <b>${F(c.variation)} L</b>.<br>4% operational = ${F(c.operational)} L. Evap./handling = ${F(c.evap)} L. TVA/shrinkage = ${F(c.tva)} L. <b>Permissible = ${F(c.permissible)} L.</b>`;
+ const rateText=(c.excessQty>0?`${F(c.firstQty)} L × ${(RULES[f.rule]||RULES.MS).up*100}% + ${F(c.excessQty)} L × ${(RULES[f.rule]||RULES.MS).above*100}%`: `${F(c.firstQty)} L × ${(RULES[f.rule]||RULES.MS).up*100}%`);
+ el.querySelector(".auto").innerHTML=`<b>Automatic calculation:</b> Period = <b>${F(c.days)} days</b>; prorated 600 KL threshold = <b>${F(c.thresholdL)} L</b>. Total available ${F(c.available)} L → DIP sales ${F(c.dipSales)} L. DU gross ${F(c.gross)} L − testing = DU sales <b>${F(c.sales)} L</b>. Variation = <b>${F(c.variation)} L</b>.<br>4% operational = ${F(c.operational)} L. Evap./handling = <b>${F(c.evap)} L</b> (${rateText}). TVA/shrinkage = ${F(c.tva)} L. <b>Permissible = ${F(c.permissible)} L.</b>`;
  el.querySelector(".dipKpi").textContent=F(c.dipSales)+" L";el.querySelector(".duKpi").textContent=F(c.sales)+" L";el.querySelector(".varKpi").textContent=F(c.variation)+" L";el.querySelector(".permKpi").textContent=F(c.permissible)+" L";
  const badge=el.querySelector(".status");badge.className="badge status "+(c.within?(c.margin<50?"warn":"ok"):"bad");badge.textContent=c.within?(c.margin<50?"WITHIN — CLOSE":"YES — WITHIN LIMIT"):"NO — EXCEEDS LIMIT";
  summary();
@@ -144,21 +162,23 @@ function render(){
 function summary(){
  $("summary").innerHTML=fuels.map(f=>{const c=calculate(f);const cls=c.within?(c.margin<50?"warn":"ok"):"bad";return `<tr><td><b>${esc(f.name)}</b></td><td>${F(c.dipSales)}</td><td>${F(c.sales)}</td><td>${F(c.variation)}</td><td>${F(c.operational)}</td><td>${F(c.evap)}</td><td>${F(c.tva)}</td><td>${F(c.permissible)}</td><td>${F(c.margin)}</td><td><span class="badge ${cls}">${c.within?"YES":"NO"}</span></td></tr>`}).join("");
 }
-function saveData(){localStorage.setItem("ioclFuelStockV4",JSON.stringify({date:$("date").value,location:$("location").value,prepared:$("prepared").value,fuels}));alert("Saved.");}
-function loadData(){const x=localStorage.getItem("ioclFuelStockV4");if(!x){alert("No saved data.");return}const d=JSON.parse(x);$("date").value=d.date||"";$("location").value=d.location||"";$("prepared").value=d.prepared||"";fuels=d.fuels||[];render()}
-function resetAll(){if(confirm("Reset all entries?")){fuels=[];render()}}
+function saveData(){localStorage.setItem("ioclFuelStockV5",JSON.stringify({prevDate:$("prevDate").value,date:$("date").value,location:$("location").value,prepared:$("prepared").value,fuels}));alert("Saved.");}
+function loadData(){const x=localStorage.getItem("ioclFuelStockV5")||localStorage.getItem("ioclFuelStockV4");if(!x){alert("No saved data.");return}const d=JSON.parse(x);$("prevDate").value=d.prevDate||"";$("date").value=d.date||"";$("location").value=d.location||"";$("prepared").value=d.prepared||"";fuels=d.fuels||[];updateInspectionDays();render()}
+function resetAll(){if(confirm("Reset all entries?")){fuels=[];updateInspectionDays();render()}}
 function csv(){
- let rows=[["Fuel","Rule","Opening L","Receipts L","Actual DIP L","Annual Avg KL","DU Sales L","DIP Sales L","Variation L","Operational 4% L","Evap Handling L","TVA L","Permissible L","Margin L","Result"]];
- fuels.forEach(f=>{const c=calculate(f);rows.push([f.name,f.rule,f.opening,f.receipts,f.actual,c.annual,c.sales,c.dipSales,c.variation,c.operational,c.evap,c.tva,c.permissible,c.margin,c.within?"YES":"NO"])});
+ let rows=[["Fuel","Rule","Opening L","Receipts L","Actual DIP L","Inspection Days","Prorated 600 KL Threshold L","DU Sales L","DIP Sales L","Variation L","Operational 4% L","Evap Handling L","TVA L","Permissible L","Margin L","Result"]];
+ fuels.forEach(f=>{const c=calculate(f);rows.push([f.name,f.rule,f.opening,f.receipts,f.actual,c.days,c.thresholdL,c.sales,c.dipSales,c.variation,c.operational,c.evap,c.tva,c.permissible,c.margin,c.within?"YES":"NO"])});
  const s=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download="IOCL_stock_"+($("date").value||"report")+".csv";a.click();
 }
 function example(){
+ $("prevDate").value="2026-04-20"; $("date").value="2026-08-31"; updateInspectionDays();
  fuels=[
  {name:"HSD",rule:"HSD",opening:3369,receipts:521000,actual:13016,annualKL:"",tva:0,dus:[{name:"HSD DU-5 NZL-7",previous:255165,current:337967,testing:0},{name:"HSD DU-9 NZL-11",previous:2799098,current:3229298,testing:1800}]},
  {name:"MS",rule:"MS",opening:11165,receipts:741000,actual:9569,annualKL:"",tva:0,dus:[{name:"MS DU-8 NZL-8",previous:2523198,current:2826263,testing:2100},{name:"MS DU-8 NZL-9",previous:141805,current:141805,testing:0},{name:"MS DU-9 NZL-10",previous:1414605,current:1533796,testing:0},{name:"MS DU-5 NZL-5",previous:2323830,current:2323830,testing:0}]},
  {name:"X2",rule:"MS",opening:972,receipts:70000,actual:6693,annualKL:"",tva:0,dus:[{name:"X2 DU-5 NZL-5",previous:141805,current:206657,testing:1300}]}
  ];render();
 }
+$("prevDate").addEventListener("change",updateInspectionDays);$("date").addEventListener("change",updateInspectionDays);
 $("addFuel").addEventListener("click",()=>{fuels.push({name:"New Fuel",rule:"MS",opening:"",receipts:"",actual:"",annualKL:"",tva:"",dus:[{name:"DU / Nozzle 1",previous:"",current:"",testing:""}]});render()});
 $("example").addEventListener("click",example);$("save").addEventListener("click",saveData);$("load").addEventListener("click",loadData);$("csv").addEventListener("click",csv);$("reset").addEventListener("click",resetAll);
 fuels=[{name:"",rule:"MS",opening:"",receipts:"",actual:"",annualKL:"",tva:"",dus:[{name:"DU / Nozzle 1",previous:"",current:"",testing:""}]}];render();
