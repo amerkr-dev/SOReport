@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b5cab">
+<title>Fuel Stock Verification Calculator</title>
+<style>
+:root{--blue:#0b5cab;--bg:#f4f7fb;--card:#fff;--text:#17202a;--muted:#667085;--line:#d9e1ea;--ok:#087f5b;--warn:#b76e00;--bad:#c92a2a}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#0b5cab,#063b78);color:#fff;padding:18px 16px 20px;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #0002}
+h1{font-size:21px;margin:0 0 4px}.sub{font-size:12px;opacity:.86}
+main{max-width:1050px;margin:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 2px 8px #102a4308}
+h2{font-size:17px;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+label{font-size:12px;font-weight:650;color:#475467;display:block}input,select,button{font:inherit}
+input,select{width:100%;margin-top:5px;padding:10px 9px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}
+button{border:0;border-radius:9px;padding:10px 13px;font-weight:700;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e8eef6;color:#123}.danger{background:#fee2e2;color:#991b1b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:760px}th,td{padding:8px;border-bottom:1px solid var(--line);font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#f7f9fc;color:#475467;position:sticky;top:0}
+.product-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.badge{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.ok{background:#dff7ed;color:var(--ok)}.warn{background:#fff0d6;color:var(--warn)}.bad{background:#ffe1e1;color:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.kpi{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:9px}.kpi b{display:block;font-size:16px;margin-top:3px}
+.small{font-size:11px;color:var(--muted)}.formula{background:#f8fafc;border-left:3px solid var(--blue);padding:9px;margin-top:10px;font-size:12px;line-height:1.55}
+.footer{font-size:11px;color:var(--muted);padding:15px 2px 30px}
+@media(max-width:700px){.grid,.kpis{grid-template-columns:repeat(2,1fr)}main{padding:8px}.card{padding:11px}h1{font-size:19px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Fuel Stock Verification Calculator</h1>
+  <div class="sub">Mobile-friendly DU totaliser + physical stock reconciliation</div>
+</header>
+<main>
+<section class="card">
+  <h2>Inspection / Outlet Details</h2>
+  <div class="grid">
+    <label>Date<input id="date" type="date"></label>
+    <label>Outlet / RO<input id="outlet" placeholder="Outlet name"></label>
+    <label>Inspector / User<input id="user" placeholder="Name"></label>
+    <label>Unit<select id="unit"><option value="L">Litres</option><option value="KL">KL</option></select></label>
+  </div>
+</section>
+
+<section class="card">
+  <div class="product-head"><h2 style="margin:0">Product Reconciliation</h2><button class="primary" onclick="addProduct()">+ Add Product</button></div>
+  <div id="products"></div>
+</section>
+
+<section class="card">
+  <h2>All Product Summary</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Product</th><th>Opening</th><th>Receipts</th><th>Closing DIP</th><th>DIP Sales</th><th>DU Sales</th><th>Variation</th><th>Limit</th><th>Status</th></tr></thead>
+      <tbody id="summary"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Actions</h2>
+  <div class="actions">
+    <button class="primary" onclick="saveData()">Save on this phone</button>
+    <button class="secondary" onclick="loadData()">Load saved data</button>
+    <button class="secondary" onclick="exportCSV()">Export CSV</button>
+    <button class="danger" onclick="resetAll()">Reset</button>
+  </div>
+  <div class="small" style="margin-top:8px">Data is stored locally in this browser. No server/database is required for GitHub Pages.</div>
+</section>
+
+<div class="footer">
+  Calculation basis used by this app: Total DU sales = Σ(Current meter − Previous meter − Testing). 
+  Total available stock = Opening stock + Receipts. DIP sales = Total available stock − Closing physical/DIP stock.
+  Variation = DU sales − DIP sales. Permissible variation is entered per product so the calculator does not assume a universal IOCL limit.
+  Always use the applicable current IOCL guideline, approved tank calibration data and inspection methodology for official reconciliation.
+</div>
+</main>
+
+<script>
+const defaultProducts=[
+ {name:"HSD",opening:3369,receipts:521000,closing:13016,limit:1748.52,dus:[
+   {name:"HSD DU-5 NZL-7",prev:255165,current:337967,testing:0},
+   {name:"HSD DU-9 NZL-11",prev:2799098,current:3229298,testing:1800}]},
+ {name:"MS",opening:11165,receipts:741000,closing:9569,limit:5422.76,dus:[
+   {name:"MS DU-8 NZL-8",prev:2523198,current:2826263,testing:2100},
+   {name:"MS DU-8 NZL-9",prev:141805,current:141805,testing:0},
+   {name:"MS DU-9 NZL-10",prev:1414605,current:1533796,testing:0},
+   {name:"MS DU-5 NZL-5",prev:2323830,current:2323830,testing:0}]},
+ {name:"X2",opening:972,receipts:70000,closing:6693,limit:744.36,dus:[
+   {name:"X2 DU-5 NZL-5",prev:141805,current:206657,testing:1300}]}
+];
+let products=JSON.parse(JSON.stringify(defaultProducts));
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+
+function n(v){return Number(v)||0}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function calc(p){
+ const total=p.dus.reduce((a,d)=>a+n(d.current)-n(d.prev)-n(d.testing),0);
+ const available=n(p.opening)+n(p.receipts);
+ const dip=available-n(p.closing);
+ const variation=total-dip;
+ const lim=n(p.limit);
+ const within=Math.abs(variation)<=lim;
+ return {total,available,dip,variation,lim,within,margin:lim-Math.abs(variation)};
+}
+function render(){
+ const root=document.getElementById("products"); root.innerHTML="";
+ products.forEach((p,pi)=>{
+  const c=calc(p);
+  const cls=c.within ? (c.margin<50?"warn":"ok"):"bad";
+  const status=c.within?(c.margin<50?"WITHIN LIMIT — CLOSE":"YES — WITHIN LIMIT"):"NO — OVER LIMIT";
+  const wrap=document.createElement("div"); wrap.className="card"; wrap.style.margin="8px 0";
+  wrap.innerHTML=`
+   <div class="product-head">
+    <div style="display:flex;gap:8px;align-items:center">
+      <input style="width:115px;margin:0;font-weight:800" value="${esc(p.name)}" oninput="products[${pi}].name=this.value;renderSummaryOnly()">
+      <span class="badge ${cls}">${status}</span>
+    </div>
+    <button class="danger" onclick="removeProduct(${pi})">Remove</button>
+   </div>
+   <div class="grid">
+    <label>Opening Stock (L)<input type="number" value="${p.opening}" oninput="products[${pi}].opening=this.value;refresh()"></label>
+    <label>Receipts Since Last Inspection (L)<input type="number" value="${p.receipts}" oninput="products[${pi}].receipts=this.value;refresh()"></label>
+    <label>Closing Physical/DIP Stock (L)<input type="number" value="${p.closing}" oninput="products[${pi}].closing=this.value;refresh()"></label>
+    <label>Permissible Variation (L)<input type="number" step="0.01" value="${p.limit}" oninput="products[${pi}].limit=this.value;refresh()"></label>
+   </div>
+   <div class="formula">
+    <b>Total available:</b> ${fmt(c.available)} L &nbsp; | &nbsp;
+    <b>DIP sales:</b> ${fmt(c.dip)} L &nbsp; | &nbsp;
+    <b>DU sales:</b> ${fmt(c.total)} L &nbsp; | &nbsp;
+    <b>Variation:</b> ${fmt(c.variation)} L &nbsp; | &nbsp;
+    <b>Margin:</b> ${fmt(c.margin)} L
+   </div>
+   <div style="display:flex;justify-content:space-between;align-items:center;margin:12px 0 7px">
+     <b>DU / Nozzle Totaliser Readings</b>
+     <button class="secondary" onclick="addDU(${pi})">+ Add DU</button>
+   </div>
+   <div class="tablewrap"><table>
+    <thead><tr><th>DU / Nozzle</th><th>Previous Meter</th><th>Current Meter</th><th>Testing Qty</th><th>Gross Difference</th><th>Sales</th><th></th></tr></thead>
+    <tbody>${p.dus.map((d,di)=>{
+      const gross=n(d.current)-n(d.prev), sales=gross-n(d.testing);
+      return `<tr>
+       <td><input value="${esc(d.name||"DU")}" oninput="products[${pi}].dus[${di}].name=this.value;renderSummaryOnly()"></td>
+       <td><input type="number" value="${d.prev}" oninput="products[${pi}].dus[${di}].prev=this.value;refresh()"></td>
+       <td><input type="number" value="${d.current}" oninput="products[${pi}].dus[${di}].current=this.value;refresh()"></td>
+       <td><input type="number" value="${d.testing}" oninput="products[${pi}].dus[${di}].testing=this.value;refresh()"></td>
+       <td>${fmt(gross)}</td><td><b>${fmt(sales)}</b></td>
+       <td><button class="danger" onclick="removeDU(${pi},${di})">×</button></td>
+      </tr>`;
+    }).join("")}</tbody>
+   </table></div>
+  `;
+  root.appendChild(wrap);
+ });
+ renderSummaryOnly();
+}
+function fmt(x){return n(x).toLocaleString("en-IN",{maximumFractionDigits:2})}
+function renderSummaryOnly(){
+ const body=document.getElementById("summary");
+ body.innerHTML=products.map(p=>{
+  const c=calc(p), cls=c.within?(c.margin<50?"warn":"ok"):"bad";
+  return `<tr><td><b>${esc(p.name)}</b></td><td>${fmt(p.opening)}</td><td>${fmt(p.receipts)}</td><td>${fmt(p.closing)}</td><td>${fmt(c.dip)}</td><td>${fmt(c.total)}</td><td>${fmt(c.variation)}</td><td>${fmt(c.limit)}</td><td><span class="badge ${cls}">${c.within?"YES":"NO"}</span></td></tr>`;
+ }).join("");
+}
+function refresh(){renderSummaryOnly();render();} // redraw inputs to keep calculations synchronized
+function addDU(pi){products[pi].dus.push({name:"New DU",prev:0,current:0,testing:0});render()}
+function removeDU(pi,di){products[pi].dus.splice(di,1);render()}
+function addProduct(){products.push({name:"New Product",opening:0,receipts:0,closing:0,limit:0,dus:[]});render()}
+function removeProduct(pi){products.splice(pi,1);render()}
+function saveData(){
+ localStorage.setItem("fuelStockCalc",JSON.stringify({date:document.getElementById("date").value,outlet:document.getElementById("outlet").value,user:document.getElementById("user").value,products}));
+ alert("Saved on this phone/browser.");
+}
+function loadData(){
+ const x=localStorage.getItem("fuelStockCalc"); if(!x){alert("No saved data found.");return}
+ const d=JSON.parse(x); document.getElementById("date").value=d.date||"";document.getElementById("outlet").value=d.outlet||"";document.getElementById("user").value=d.user||"";products=d.products||[];render();
+}
+function resetAll(){if(confirm("Reset all current entries?")){products=[];render()}}
+function exportCSV(){
+ let rows=[["Product","Opening","Receipts","Closing DIP","DIP Sales","DU Sales","Variation","Permissible Limit","Status"]];
+ products.forEach(p=>{let c=calc(p);rows.push([p.name,p.opening,p.receipts,p.closing,c.dip,c.total,c.variation,c.limit,c.within?"YES":"NO"]);
+   p.dus.forEach(d=>rows.push([d.name,"","","","Previous:"+d.prev,"Current:"+d.current,"Testing:"+d.testing,"",""]));
+ });
+ const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);a.download="fuel_stock_verification_"+(document.getElementById("date").value||"report")+".csv";a.click();URL.revokeObjectURL(a.href);
+}
+render();
+</script>
+</body>
+</html>
